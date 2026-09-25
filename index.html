@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tuifee — Manage Students. Track Fees. Stay Organized.</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-theme="lilac">
+
+<!-- ============================= LANDING PAGE ============================= -->
+<div id="landing-page" class="landing-page">
+  <div class="landing-bg">
+    <span class="blob blob-1"></span>
+    <span class="blob blob-2"></span>
+    <span class="blob blob-3"></span>
+  </div>
+
+  <header class="landing-nav">
+    <div class="landing-logo">
+      <span class="logo-mark">🎓</span>
+      <span class="logo-text">Tuifee</span>
+    </div>
+    <button class="btn btn-primary" id="nav-get-started-btn">Get Started →</button>
+  </header>
+
+  <main class="landing-hero">
+    <div class="hero-copy">
+      <span class="hero-eyebrow">For private tuition teachers</span>
+      <h1 class="hero-title">Tuifee</h1>
+      <p class="hero-tagline">Manage Students. Track Fees. Stay Organized.</p>
+      <p class="hero-sub">A calm, local dashboard for your tuition business — students, batches, monthly fees and payment history, all in one place. Nothing leaves your browser.</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary btn-lg" id="get-started-btn">Get Started →</button>
+        <span class="hero-hint">No sign-up · No internet required · Your data stays local</span>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><strong>100%</strong><span>Offline &amp; private</span></div>
+        <div class="hero-stat"><strong>7</strong><span>Beautiful themes</span></div>
+        <div class="hero-stat"><strong>0</strong><span>Setup required</span></div>
+      </div>
+    </div>
+
+    <div class="hero-preview" aria-hidden="true">
+      <div class="preview-card glass">
+        <div class="preview-topbar">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        </div>
+        <div class="preview-header">
+          <div>
+            <div class="preview-title">Good Morning, Teacher 👋</div>
+            <div class="preview-sub">Here's how your tuition is doing today</div>
+          </div>
+        </div>
+        <div class="preview-stats">
+          <div class="preview-stat"><span>Students</span><strong>48</strong></div>
+          <div class="preview-stat"><span>Collected</span><strong>₹86,400</strong></div>
+          <div class="preview-stat"><span>Pending</span><strong>₹12,200</strong></div>
+        </div>
+        <div class="preview-chart">
+          <div class="preview-ring"></div>
+          <div class="preview-bars">
+            <span style="height:40%"></span><span style="height:65%"></span><span style="height:50%"></span>
+            <span style="height:80%"></span><span style="height:35%"></span><span style="height:70%"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <section class="landing-features">
+    <div class="feature-card">
+      <span class="feature-icon">👥</span>
+      <h3>Students &amp; Batches</h3>
+      <p>Organize every student into batches with schedules, subjects and default fees.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">💳</span>
+      <h3>Fees &amp; Payments</h3>
+      <p>Record full or partial payments and watch statuses update automatically.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">📊</span>
+      <h3>Reports &amp; History</h3>
+      <p>See collection trends, batch performance and a complete payment trail.</p>
+    </div>
+  </section>
+
+  <footer class="landing-footer">Tuifee — runs entirely in your browser. No data is ever sent anywhere.</footer>
+</div>
+
+<!-- ============================= LOGIN PAGE ============================= -->
+<div id="login-page" class="login-page hidden">
+  <div class="landing-bg">
+    <span class="blob blob-1"></span>
+    <span class="blob blob-2"></span>
+  </div>
+  <div class="login-card glass">
+    <button class="icon-btn login-back" id="login-back-btn" aria-label="Back to home">←</button>
+    <div class="login-logo">
+      <span class="logo-mark">🎓</span>
+      <span class="logo-text">Tuifee</span>
+    </div>
+    <p class="login-sub">Welcome back. Log in to manage your tuition.</p>
+
+    <form id="login-form" class="login-form" novalidate>
+      <div class="form-group">
+        <label for="login-username">Username</label>
+        <input type="text" id="login-username" name="username" autocomplete="username" placeholder="teacher" required>
+        <span class="field-error" id="login-username-error"></span>
+      </div>
+      <div class="form-group">
+        <label for="login-password">Password</label>
+        <div class="password-field">
+          <input type="password" id="login-password" name="password" autocomplete="current-password" placeholder="••••••••" required>
+          <button type="button" class="password-toggle" id="login-password-toggle" aria-label="Show password">👁️</button>
+        </div>
+        <span class="field-error" id="login-password-error"></span>
+      </div>
+      <div class="field-error" id="login-form-error" role="alert"></div>
+      <button type="submit" class="btn btn-primary btn-block btn-lg">Log In</button>
+      <p class="login-hint">Default account — Username: <code>teacher</code> · Password: <code>teacher123</code></p>
+    </form>
+  </div>
+</div>
+
+<!-- ============================= APP SHELL ============================= -->
+<div id="app" class="app hidden">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-top">
+      <div class="sidebar-logo">
+        <span class="logo-mark">🎓</span>
+        <span class="logo-text">Tuifee</span>
+      </div>
+      <button class="icon-btn sidebar-collapse-btn" id="sidebar-collapse-btn" aria-label="Collapse sidebar">«</button>
+    </div>
+
+    <nav class="sidebar-nav" aria-label="Main navigation">
+      <button class="nav-item active" data-view="dashboard"><span class="nav-icon">🏠</span><span class="nav-label">Dashboard</span></button>
+      <button class="nav-item" data-view="students"><span class="nav-icon">👥</span><span class="nav-label">Students</span></button>
+      <button class="nav-item" data-view="batches"><span class="nav-icon">📚</span><span class="nav-label">Batches</span></button>
+      <button class="nav-item" data-view="fees"><span class="nav-icon">💳</span><span class="nav-label">Fees</span></button>
+      <button class="nav-item" data-view="history"><span class="nav-icon">🕘</span><span class="nav-label">Fee History</span></button>
+      <button class="nav-item" data-view="reports"><span class="nav-icon">📊</span><span class="nav-label">Reports</span></button>
+      <button class="nav-item" data-view="settings"><span class="nav-icon">⚙️</span><span class="nav-label">Settings</span></button>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <button class="nav-item nav-logout" id="logout-btn"><span class="nav-icon">🚪</span><span class="nav-label">Logout</span></button>
+    </div>
+  </aside>
+
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <!-- Main -->
+  <div class="main-wrap">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="icon-btn mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu">☰</button>
+        <div>
+          <h1 class="topbar-title" id="topbar-title">Dashboard</h1>
+          <p class="topbar-date" id="topbar-date"></p>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <span class="topbar-greeting" id="topbar-greeting">Good Morning, Teacher 👋</span>
+        <button class="icon-btn notif-btn" id="notif-btn" aria-label="Notifications">
+          🔔<span class="notif-dot" id="notif-dot" hidden></span>
+        </button>
+        <div class="avatar" id="topbar-avatar">T</div>
+      </div>
+    </header>
+
+    <main class="content" id="content">
+
+      <!-- ===== DASHBOARD VIEW ===== -->
+      <section class="view" id="view-dashboard">
+        <div class="stat-grid" id="dashboard-stats"></div>
+
+        <div class="dashboard-grid">
+          <div class="card chart-card">
+            <div class="card-header">
+              <h2>This Month's Collection</h2>
+              <span class="card-sub" id="dashboard-month-label"></span>
+            </div>
+            <div class="doughnut-wrap">
+              <canvas id="dashboard-doughnut" width="260" height="260"></canvas>
+              <div class="doughnut-center">
+                <strong id="dashboard-doughnut-pct">0%</strong>
+                <span>Collected</span>
+              </div>
+            </div>
+            <p class="doughnut-caption" id="dashboard-doughnut-caption">₹0 / ₹0</p>
+            <div class="legend">
+              <span><i class="dot dot-paid"></i>Paid Fees</span>
+              <span><i class="dot dot-pending"></i>Pending Fees</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h2>Quick Actions</h2></div>
+            <div class="quick-actions">
+              <button class="quick-action" data-action="add-student"><span>➕</span>Add Student</button>
+              <button class="quick-action" data-action="add-batch"><span>📚</span>Create Batch</button>
+              <button class="quick-action" data-action="record-payment"><span>💳</span>Record Payment</button>
+              <button class="quick-action" data-action="view-pending"><span>⏳</span>View Pending Fees</button>
+              <button class="quick-action" data-action="view-reports"><span>📊</span>View Reports</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h2>Recent Payments</h2>
+            <button class="link-btn" data-nav="history">View all →</button>
+          </div>
+          <div id="dashboard-recent"></div>
+        </div>
+      </section>
+
+      <!-- ===== STUDENTS VIEW ===== -->
+      <section class="view hidden" id="view-students">
+        <div class="view-header">
+          <div>
+            <h2>Students</h2>
+            <p class="view-sub">Manage all your tuition students</p>
+          </div>
+          <button class="btn btn-primary" id="add-student-btn">+ Add Student</button>
+        </div>
+
+        <div class="toolbar card">
+          <div class="search-box">
+            <span>🔎</span>
+            <input type="search" id="student-search" placeholder="Search by name, guardian or mobile...">
+          </div>
+          <select id="student-filter-class" class="select-input"><option value="">All Classes</option></select>
+          <select id="student-filter-batch" class="select-input"><option value="">All Batches</option></select>
+          <select id="student-filter-status" class="select-input">
+            <option value="">All Statuses</option>
+            <option value="paid">Paid</option>
+            <option value="partial">Partially Paid</option>
+            <option value="unpaid">Pending</option>
+            <option value="overdue">Overdue</option>
+          </select>
+          <select id="student-sort" class="select-input">
+            <option value="name-asc">Name A–Z</option>
+            <option value="name-desc">Name Z–A</option>
+            <option value="pending-desc">Highest Pending</option>
+            <option value="pending-asc">Lowest Pending</option>
+            <option value="fee-desc">Highest Fee</option>
+            <option value="newest">Newest Student</option>
+            <option value="oldest">Oldest Student</option>
+          </select>
+          <button class="btn btn-ghost" id="student-clear-filters">Clear</button>
+          <span class="toolbar-count" id="student-count"></span>
+        </div>
+
+        <div class="card table-card">
+          <div class="table-scroll">
+            <table class="data-table" id="students-table">
+              <thead>
+                <tr>
+                  <th>Student</th><th>Class</th><th>Batch</th><th>Guardian</th>
+                  <th>Join Date</th><th>Mobile</th><th>Monthly Fee</th>
+                  <th>Status</th><th>Pending</th><th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="students-tbody"></tbody>
+            </table>
+          </div>
+          <div class="student-cards" id="students-cards"></div>
+          <div class="empty-state hidden" id="students-empty">
+            <span class="empty-icon">🧑‍🎓</span>
+            <h3>No students added yet.</h3>
+            <p>Add your first student to start tracking their fees.</p>
+            <button class="btn btn-primary" id="students-empty-add-btn">+ Add Your First Student</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== BATCHES VIEW ===== -->
+      <section class="view hidden" id="view-batches">
+        <div class="view-header">
+          <div>
+            <h2>Batches</h2>
+            <p class="view-sub">Group your students into batches and schedules</p>
+          </div>
+          <button class="btn btn-primary" id="add-batch-btn">+ Create Batch</button>
+        </div>
+        <div class="batch-grid" id="batches-grid"></div>
+        <div class="empty-state hidden" id="batches-empty">
+          <span class="empty-icon">📚</span>
+          <h3>No batches created yet.</h3>
+          <p>Create a batch to organize students by class, subject and schedule.</p>
+          <button class="btn btn-primary" id="batches-empty-add-btn">+ Create Your First Batch</button>
+        </div>
+      </section>
+
+      <!-- ===== FEES VIEW ===== -->
+      <section class="view hidden" id="view-fees">
+        <div class="view-header">
+          <div>
+            <h2>Fees</h2>
+            <p class="view-sub">Track monthly fee status for every student</p>
+          </div>
+          <input type="month" id="fees-month" class="select-input">
+        </div>
+
+        <div class="fee-summary-row" id="fees-summary"></div>
+
+        <div class="toolbar card">
+          <div class="search-box"><span>🔎</span><input type="search" id="fees-search" placeholder="Search students..."></div>
+          <select id="fees-filter-batch" class="select-input"><option value="">All Batches</option></select>
+          <select id="fees-filter-class" class="select-input"><option value="">All Classes</option></select>
+          <select id="fees-filter-status" class="select-input">
+            <option value="">All Statuses</option>
+            <option value="paid">Paid</option>
+            <option value="partial">Partially Paid</option>
+            <option value="unpaid">Unpaid</option>
+            <option value="overdue">Overdue</option>
+          </select>
+          <button class="btn btn-ghost" id="fees-clear-filters">Clear</button>
+        </div>
+
+        <div class="card table-card">
+          <div class="table-scroll">
+            <table class="data-table" id="fees-table">
+              <thead>
+                <tr><th>Student</th><th>Batch</th><th>Month</th><th>Fee</th><th>Paid</th><th>Pending</th><th>Status</th><th>Action</th></tr>
+              </thead>
+              <tbody id="fees-tbody"></tbody>
+            </table>
+          </div>
+          <div class="student-cards" id="fees-cards"></div>
+          <div class="empty-state hidden" id="fees-empty">
+            <span class="empty-icon">💳</span>
+            <h3>No students to show yet.</h3>
+            <p>Add students to start tracking monthly fees.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== FEE HISTORY VIEW ===== -->
+      <section class="view hidden" id="view-history">
+        <div class="view-header">
+          <div>
+            <h2>Fee History</h2>
+            <p class="view-sub">A complete trail of every fee transaction</p>
+          </div>
+        </div>
+
+        <div class="toolbar card">
+          <select id="history-filter-student" class="select-input"><option value="">All Students</option></select>
+          <select id="history-filter-batch" class="select-input"><option value="">All Batches</option></select>
+          <input type="month" id="history-filter-month" class="select-input">
+          <select id="history-filter-status" class="select-input">
+            <option value="">All Statuses</option>
+            <option value="paid">Paid</option>
+            <option value="partial">Partially Paid</option>
+            <option value="unpaid">Unpaid</option>
+          </select>
+          <select id="history-sort" class="select-input">
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+          </select>
+          <button class="btn btn-ghost" id="history-clear-filters">Clear</button>
+        </div>
+
+        <div class="card table-card">
+          <div class="table-scroll">
+            <table class="data-table" id="history-table">
+              <thead>
+                <tr><th>Student</th><th>Month</th><th>Change</th><th>Paid</th><th>Remaining</th><th>Date &amp; Time</th></tr>
+              </thead>
+              <tbody id="history-tbody"></tbody>
+            </table>
+          </div>
+          <div class="empty-state hidden" id="history-empty">
+            <span class="empty-icon">🕘</span>
+            <h3>No payment history yet.</h3>
+            <p>Recorded payments and fee changes will appear here.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== REPORTS VIEW ===== -->
+      <section class="view hidden" id="view-reports">
+        <div class="view-header">
+          <div><h2>Reports</h2><p class="view-sub">Understand your tuition's fee performance</p></div>
+        </div>
+
+        <div class="stat-grid" id="reports-stats"></div>
+
+        <div class="dashboard-grid">
+          <div class="card chart-card">
+            <div class="card-header"><h2>Paid vs Pending</h2></div>
+            <div class="doughnut-wrap">
+              <canvas id="reports-doughnut" width="240" height="240"></canvas>
+              <div class="doughnut-center"><strong id="reports-doughnut-pct">0%</strong><span>Collected</span></div>
+            </div>
+            <div class="legend">
+              <span><i class="dot dot-paid"></i>Paid</span>
+              <span><i class="dot dot-pending"></i>Pending</span>
+            </div>
+          </div>
+
+          <div class="card chart-card">
+            <div class="card-header"><h2>Monthly Collection</h2></div>
+            <div id="monthly-chart-wrap" class="bar-chart-wrap">
+              <canvas id="monthly-chart" width="420" height="240"></canvas>
+            </div>
+            <div class="empty-state-inline hidden" id="monthly-chart-empty">Not enough data to generate this report yet.</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><h2>Batch-wise Collection</h2></div>
+          <div id="batch-report-list"></div>
+          <div class="empty-state-inline hidden" id="batch-report-empty">Not enough data to generate this report yet.</div>
+        </div>
+      </section>
+
+      <!-- ===== SETTINGS VIEW ===== -->
+      <section class="view hidden" id="view-settings">
+        <div class="view-header"><div><h2>Settings</h2><p class="view-sub">Configure Tuifee to match your tuition</p></div></div>
+
+        <div class="settings-grid">
+          <div class="card">
+            <div class="card-header"><h2>Account</h2></div>
+            <form id="account-form" class="settings-form" novalidate>
+              <div class="form-group"><label for="set-username">Username</label><input type="text" id="set-username" required></div>
+              <div class="form-row">
+                <div class="form-group"><label for="set-current-password">Current Password</label><input type="password" id="set-current-password" autocomplete="current-password" placeholder="Required to change password"></div>
+              </div>
+              <div class="form-row">
+                <div class="form-group"><label for="set-new-password">New Password</label><input type="password" id="set-new-password" autocomplete="new-password"></div>
+                <div class="form-group"><label for="set-confirm-password">Confirm New Password</label><input type="password" id="set-confirm-password" autocomplete="new-password"></div>
+              </div>
+              <span class="field-error" id="account-form-error"></span>
+              <button type="submit" class="btn btn-primary">Save Account Settings</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h2>Tuition Profile</h2></div>
+            <form id="profile-form" class="settings-form" novalidate>
+              <div class="form-row">
+                <div class="form-group"><label for="set-tuition-name">Tuition Name</label><input type="text" id="set-tuition-name"></div>
+                <div class="form-group"><label for="set-teacher-name">Teacher Name</label><input type="text" id="set-teacher-name"></div>
+              </div>
+              <div class="form-row">
+                <div class="form-group"><label for="set-mobile">Mobile Number</label><input type="tel" id="set-mobile"></div>
+                <div class="form-group"><label for="set-default-fee">Default Monthly Fee</label><input type="number" id="set-default-fee" min="0"></div>
+              </div>
+              <div class="form-group"><label for="set-currency">Currency Symbol</label><input type="text" id="set-currency" maxlength="3" style="max-width:100px"></div>
+              <button type="submit" class="btn btn-primary">Save Profile</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h2>Fee Settings</h2></div>
+            <form id="fee-settings-form" class="settings-form" novalidate>
+              <div class="form-row">
+                <div class="form-group"><label for="set-due-day">Default Due Day</label><input type="number" id="set-due-day" min="1" max="28"></div>
+                <div class="form-group"><label for="set-default-status">Default Initial Status</label>
+                  <select id="set-default-status"><option value="unpaid">Unpaid</option><option value="paid">Paid</option><option value="partial">Partially Paid</option></select>
+                </div>
+              </div>
+              <div class="form-group"><label>Monthly Fee Cycle</label><input type="text" value="Monthly (1st – last day)" disabled></div>
+              <button type="submit" class="btn btn-primary">Save Fee Settings</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h2>Theme</h2></div>
+            <div class="theme-grid" id="theme-grid"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h2>Data</h2></div>
+            <p class="card-desc">Your data lives only in this browser. Export it regularly to keep a safe backup.</p>
+            <div class="data-actions">
+              <button class="btn btn-secondary" id="export-data-btn">⬇ Export Data</button>
+              <button class="btn btn-secondary" id="import-data-btn">⬆ Import Data</button>
+              <input type="file" id="import-file-input" accept=".json" hidden>
+              <button class="btn btn-danger" id="clear-data-btn">🗑 Clear All Data</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- ============================= MODALS ============================= -->
+<div class="modal-overlay hidden" id="modal-overlay">
+
+  <!-- Student Modal -->
+  <div class="modal" id="student-modal" role="dialog" aria-modal="true" aria-labelledby="student-modal-title">
+    <div class="modal-header">
+      <h2 id="student-modal-title">Add Student</h2>
+      <button class="icon-btn modal-close" data-close-modal="student-modal" aria-label="Close">✕</button>
+    </div>
+    <form id="student-form" class="modal-body" novalidate>
+      <input type="hidden" id="student-id">
+      <h3 class="form-section-title">Student Information</h3>
+      <div class="form-row">
+        <div class="form-group"><label for="f-student-name">Student Name *</label><input type="text" id="f-student-name" required><span class="field-error" id="err-student-name"></span></div>
+        <div class="form-group"><label for="f-student-class">Class *</label><input type="text" id="f-student-class" placeholder="e.g. Class 9" required><span class="field-error" id="err-student-class"></span></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label for="f-student-batch">Batch *</label><select id="f-student-batch" required></select><span class="field-error" id="err-student-batch"></span></div>
+        <div class="form-group"><label for="f-student-guardian">Guardian Name</label><input type="text" id="f-student-guardian"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label for="f-student-join">Join Date *</label><input type="date" id="f-student-join" required><span class="field-error" id="err-student-join"></span></div>
+        <div class="form-group"><label for="f-student-mobile">Mobile Number</label><input type="tel" id="f-student-mobile" placeholder="10-digit mobile number"><span class="field-error" id="err-student-mobile"></span></div>
+      </div>
+      <div class="form-group"><label for="f-student-notes">Notes</label><textarea id="f-student-notes" rows="2"></textarea></div>
+
+      <h3 class="form-section-title">Fee Information</h3>
+      <div class="form-row">
+        <div class="form-group"><label for="f-student-fee">Monthly Fee (₹) *</label><input type="number" id="f-student-fee" min="0" required><span class="field-error" id="err-student-fee"></span></div>
+        <div class="form-group"><label for="f-student-due">Fee Due Day *</label><input type="number" id="f-student-due" min="1" max="28" required><span class="field-error" id="err-student-due"></span></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label for="f-student-status">Initial Fee Status *</label>
+          <select id="f-student-status">
+            <option value="paid">Paid</option>
+            <option value="unpaid" selected>Unpaid</option>
+            <option value="partial">Partially Paid</option>
+          </select>
+        </div>
+        <div class="form-group" id="f-student-paid-group"><label for="f-student-paid">Initial Amount Paid (₹)</label><input type="number" id="f-student-paid" min="0" value="0"><span class="field-error" id="err-student-paid"></span></div>
+      </div>
+      <p class="pending-preview" id="student-pending-preview"></p>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost" data-close-modal="student-modal">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="student-form-submit">Add Student</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Batch Modal -->
+  <div class="modal" id="batch-modal" role="dialog" aria-modal="true" aria-labelledby="batch-modal-title">
+    <div class="modal-header">
+      <h2 id="batch-modal-title">Create Batch</h2>
+      <button class="icon-btn modal-close" data-close-modal="batch-modal" aria-label="Close">✕</button>
+    </div>
+    <form id="batch-form" class="modal-body" novalidate>
+      <input type="hidden" id="batch-id">
+      <div class="form-row">
+        <div class="form-group"><label for="f-batch-name">Batch Name *</label><input type="text" id="f-batch-name" placeholder="e.g. Class 9 Evening" required><span class="field-error" id="err-batch-name"></span></div>
+        <div class="form-group"><label for="f-batch-class">Class *</label><input type="text" id="f-batch-class" required><span class="field-error" id="err-batch-class"></span></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label for="f-batch-subject">Subject</label><input type="text" id="f-batch-subject"></div>
+        <div class="form-group"><label for="f-batch-fee">Default Monthly Fee (₹)</label><input type="number" id="f-batch-fee" min="0"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label for="f-batch-start">Start Time</label><input type="time" id="f-batch-start"></div>
+        <div class="form-group"><label for="f-batch-end">End Time</label><input type="time" id="f-batch-end"></div>
+      </div>
+      <div class="form-group">
+        <label>Days</label>
+        <div class="day-picker" id="batch-day-picker">
+          <label><input type="checkbox" value="Mon"><span>Mon</span></label>
+          <label><input type="checkbox" value="Tue"><span>Tue</span></label>
+          <label><input type="checkbox" value="Wed"><span>Wed</span></label>
+          <label><input type="checkbox" value="Thu"><span>Thu</span></label>
+          <label><input type="checkbox" value="Fri"><span>Fri</span></label>
+          <label><input type="checkbox" value="Sat"><span>Sat</span></label>
+          <label><input type="checkbox" value="Sun"><span>Sun</span></label>
+        </div>
+      </div>
+      <div class="form-group"><label for="f-batch-desc">Description</label><textarea id="f-batch-desc" rows="2"></textarea></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost" data-close-modal="batch-modal">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="batch-form-submit">Create Batch</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Payment Modal -->
+  <div class="modal" id="payment-modal" role="dialog" aria-modal="true" aria-labelledby="payment-modal-title">
+    <div class="modal-header">
+      <h2 id="payment-modal-title">Record Payment</h2>
+      <button class="icon-btn modal-close" data-close-modal="payment-modal" aria-label="Close">✕</button>
+    </div>
+    <form id="payment-form" class="modal-body" novalidate>
+      <input type="hidden" id="payment-student-id">
+      <div class="form-group"><label for="f-payment-student">Student *</label><select id="f-payment-student" required></select></div>
+      <div class="form-row">
+        <div class="form-group"><label for="f-payment-month">Month *</label><input type="month" id="f-payment-month" required></div>
+        <div class="form-group"><label for="f-payment-date">Payment Date *</label><input type="date" id="f-payment-date" required></div>
+      </div>
+      <div class="payment-status-box" id="payment-status-box"></div>
+      <div class="form-row">
+        <div class="form-group"><label for="f-payment-amount">Amount (₹) *</label><input type="number" id="f-payment-amount" min="0" required><span class="field-error" id="err-payment-amount"></span></div>
+        <div class="form-group"><label for="f-payment-method">Payment Method</label>
+          <select id="f-payment-method"><option>Cash</option><option>UPI</option><option>Bank Transfer</option><option>Other</option></select>
+        </div>
+      </div>
+      <div class="form-group"><label for="f-payment-notes">Notes</label><input type="text" id="f-payment-notes"></div>
+      <button type="button" class="link-btn" id="payment-mark-full-btn">Mark fully paid for this month</button>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost" data-close-modal="payment-modal">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save Payment</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- View Student Modal -->
+  <div class="modal modal-lg" id="view-student-modal" role="dialog" aria-modal="true" aria-labelledby="view-student-title">
+    <div class="modal-header">
+      <h2 id="view-student-title">Student Profile</h2>
+      <button class="icon-btn modal-close" data-close-modal="view-student-modal" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-body" id="view-student-body"></div>
+  </div>
+
+  <!-- Confirm Dialog -->
+  <div class="modal modal-sm" id="confirm-modal" role="alertdialog" aria-modal="true" aria-labelledby="confirm-title">
+    <div class="modal-header">
+      <h2 id="confirm-title">Are you sure?</h2>
+      <button class="icon-btn modal-close" data-close-modal="confirm-modal" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-body">
+      <p id="confirm-message"></p>
+      <input type="text" id="confirm-input" class="hidden" placeholder="Type CLEAR to continue">
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost" data-close-modal="confirm-modal" id="confirm-cancel-btn">Cancel</button>
+        <button type="button" class="btn btn-danger" id="confirm-ok-btn">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Toast container -->
+<div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
